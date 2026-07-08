@@ -5,6 +5,7 @@ import {
   UpdateReminderDto,
   ReminderStatus,
 } from '../models/reminder.model';
+import { logDebug } from '../utils/debug-logger';
 
 export class ReminderService {
   private reminders: Map<string, Reminder> = new Map();
@@ -23,6 +24,10 @@ export class ReminderService {
       updatedAt: now,
     };
     this.reminders.set(reminder.id, reminder);
+    logDebug('Reminder created in service', {
+      reminderId: reminder.id,
+      scheduledAt: reminder.scheduledAt.toISOString(),
+    });
     return reminder;
   }
 
@@ -37,6 +42,7 @@ export class ReminderService {
   update(id: string, dto: UpdateReminderDto): Reminder | undefined {
     const reminder = this.reminders.get(id);
     if (!reminder) {
+      logDebug('Reminder update requested for missing id', { reminderId: id });
       return undefined;
     }
 
@@ -48,16 +54,20 @@ export class ReminderService {
     };
 
     this.reminders.set(id, updated);
+    logDebug('Reminder updated in service', { reminderId: id });
     return updated;
   }
 
   delete(id: string): boolean {
-    return this.reminders.delete(id);
+    const deleted = this.reminders.delete(id);
+    logDebug('Reminder delete attempted in service', { reminderId: id, deleted });
+    return deleted;
   }
 
   cancel(id: string): Reminder | undefined {
     const reminder = this.reminders.get(id);
     if (!reminder) {
+      logDebug('Reminder cancel requested for missing id', { reminderId: id });
       return undefined;
     }
 
@@ -68,12 +78,14 @@ export class ReminderService {
     };
 
     this.reminders.set(id, updated);
+    logDebug('Reminder cancelled in service', { reminderId: id });
     return updated;
   }
 
   markAsSent(id: string): Reminder | undefined {
     const reminder = this.reminders.get(id);
     if (!reminder) {
+      logDebug('Reminder send mark requested for missing id', { reminderId: id });
       return undefined;
     }
 
@@ -84,6 +96,7 @@ export class ReminderService {
     };
 
     this.reminders.set(id, updated);
+    logDebug('Reminder marked sent in service', { reminderId: id });
     return updated;
   }
 
