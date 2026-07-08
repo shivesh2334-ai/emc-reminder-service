@@ -12,7 +12,11 @@ function serializeMeta(meta?: DebugMeta): string {
   if (!meta || Object.keys(meta).length === 0) {
     return '';
   }
-  return ` ${JSON.stringify(meta)}`;
+  try {
+    return ` ${JSON.stringify(meta)}`;
+  } catch (_error) {
+    return ' [Unable to serialize metadata]';
+  }
 }
 
 export function logDebug(message: string, meta?: DebugMeta): void {

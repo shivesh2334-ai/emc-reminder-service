@@ -16,7 +16,8 @@ export function createApp(): express.Application {
     const requestId = randomUUID();
     res.locals.requestId = requestId;
 
-    if (!isDebugEnabled()) {
+    const debugEnabled = isDebugEnabled();
+    if (!debugEnabled) {
       next();
       return;
     }
