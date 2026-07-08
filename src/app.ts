@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import { randomUUID } from 'crypto';
 import { reminderRouter } from './routes/reminder.routes';
 import { errorHandler, notFoundHandler } from './middleware/error.middleware';
-import { logDebug } from './utils/debug-logger';
+import { isDebugEnabled, logDebug } from './utils/debug-logger';
 
 export function createApp(): express.Application {
   const app = express();
@@ -15,6 +15,12 @@ export function createApp(): express.Application {
   app.use((req, res, next) => {
     const requestId = randomUUID();
     res.locals.requestId = requestId;
+
+    if (!isDebugEnabled()) {
+      next();
+      return;
+    }
+
     const startedAt = Date.now();
 
     logDebug('Incoming request', {
