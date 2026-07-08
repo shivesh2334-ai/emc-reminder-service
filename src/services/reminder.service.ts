@@ -85,7 +85,7 @@ export class ReminderService {
   markAsSent(id: string): Reminder | undefined {
     const reminder = this.reminders.get(id);
     if (!reminder) {
-      logDebug('Reminder send mark requested for missing id', { reminderId: id });
+      logDebug('Reminder mark as sent requested for missing id', { reminderId: id });
       return undefined;
     }
 

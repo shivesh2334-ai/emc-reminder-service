@@ -1,8 +1,9 @@
 type DebugMeta = Record<string, unknown>;
 
-const enabledDebugValues = new Set(['1', 'true', 'yes', 'on', 'debug']);
+const ENABLED_DEBUG_VALUES = ['1', 'true', 'yes', 'on', 'debug'] as const;
+const enabledDebugValues = new Set<string>(ENABLED_DEBUG_VALUES);
 
-function isDebugEnabled(): boolean {
+export function isDebugEnabled(): boolean {
   const value = process.env.DEBUG?.toLowerCase().trim();
   return Boolean(value && enabledDebugValues.has(value));
 }
