@@ -4,7 +4,7 @@ const ENABLED_DEBUG_VALUES = ['1', 'true', 'yes', 'on', 'debug'] as const;
 const enabledDebugValues = new Set<string>(ENABLED_DEBUG_VALUES);
 
 export function isDebugEnabled(): boolean {
-  const value = process.env.DEBUG?.toLowerCase().trim();
+  const value = process.env.DEBUG?.trim().toLowerCase();
   return Boolean(value && enabledDebugValues.has(value));
 }
 
