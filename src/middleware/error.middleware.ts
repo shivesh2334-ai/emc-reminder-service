@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { isDebugEnabled, logDebug } from '../utils/debug-logger';
+import { logDebug } from '../utils/debug-logger';
 
 export function errorHandler(
   err: Error,
@@ -10,19 +10,11 @@ export function errorHandler(
   const requestId = res.locals.requestId;
   logDebug('Unhandled error', { requestId, message: err.message });
   console.error(err.stack);
-  const responseBody: { error: string; requestId?: string } = { error: 'Internal server error' };
-  if (isDebugEnabled()) {
-    responseBody.requestId = requestId;
-  }
-  res.status(500).json(responseBody);
+  res.status(500).json({ error: 'Internal server error' });
 }
 
 export function notFoundHandler(_req: Request, res: Response): void {
   const requestId = res.locals.requestId;
   logDebug('Route not found', { requestId });
-  const responseBody: { error: string; requestId?: string } = { error: 'Route not found' };
-  if (isDebugEnabled()) {
-    responseBody.requestId = requestId;
-  }
-  res.status(404).json(responseBody);
+  res.status(404).json({ error: 'Route not found' });
 }

@@ -21,7 +21,6 @@ export function createApp(): express.Application {
       requestId,
       method: req.method,
       path: req.path,
-      query: req.query,
     });
 
     res.on('finish', () => {
