@@ -54,6 +54,32 @@ describe('Reminder Routes', () => {
         .send({ ...validReminder, scheduledAt: 'not-a-date' });
       expect(res.status).toBe(400);
     });
+
+    it('should use the default email when recipient is omitted', async () => {
+      const { recipient, ...withoutRecipient } = validReminder;
+      const res = await request(app).post('/reminders').send(withoutRecipient);
+      expect(res.status).toBe(201);
+      expect(res.body.data.recipient).toBe('support@emc.ooo');
+    });
+
+    it('should use the default WhatsApp number when recipient is omitted', async () => {
+      const res = await request(app).post('/reminders').send({
+        ...validReminder,
+        type: ReminderType.WHATSAPP,
+        recipient: undefined,
+      });
+      expect(res.status).toBe(201);
+      expect(res.body.data.recipient).toBe('9891368298');
+    });
+
+    it('should require an explicit recipient for SMS reminders', async () => {
+      const res = await request(app).post('/reminders').send({
+        ...validReminder,
+        type: ReminderType.SMS,
+        recipient: undefined,
+      });
+      expect(res.status).toBe(400);
+    });
   });
 
   describe('GET /reminders', () => {

@@ -32,8 +32,14 @@ function validateCreateDto(dto: Partial<CreateReminderDto>): string[] {
   } else if (!isValidReminderType(dto.type)) {
     errors.push(`type must be one of: ${Object.values(ReminderType).join(', ')}`);
   }
-  if (!dto.recipient || typeof dto.recipient !== 'string') {
-    errors.push('recipient is required and must be a string');
+  if (dto.recipient !== undefined && typeof dto.recipient !== 'string') {
+    errors.push('recipient must be a string');
+  } else if (
+    !dto.recipient?.trim() &&
+    dto.type !== ReminderType.EMAIL &&
+    dto.type !== ReminderType.WHATSAPP
+  ) {
+    errors.push('recipient is required for SMS and PUSH reminders');
   }
   return errors;
 }
@@ -43,6 +49,16 @@ router.get('/', (_req: Request, res: Response) => {
   const reminders = reminderService.findAll();
   logDebug('Listed reminders', { requestId: getRequestId(res), count: reminders.length });
   res.json({ data: reminders, count: reminders.length });
+});
+
+// GET /reminders/config
+router.get('/config/defaults', (_req: Request, res: Response) => {
+  res.json({
+    data: {
+      email: process.env.DEFAULT_EMAIL || 'support@emc.ooo',
+      whatsapp: process.env.DEFAULT_WHATSAPP_NUMBER || '9891368298',
+    },
+  });
 });
 
 // GET /reminders/:id

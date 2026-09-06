@@ -4,8 +4,29 @@ import {
   CreateReminderDto,
   UpdateReminderDto,
   ReminderStatus,
+  ReminderType,
 } from '../models/reminder.model';
 import { logDebug } from '../utils/debug-logger';
+
+export const DEFAULT_WHATSAPP_NUMBER =
+  process.env.DEFAULT_WHATSAPP_NUMBER || '9891368298';
+export const DEFAULT_EMAIL = process.env.DEFAULT_EMAIL || 'support@emc.ooo';
+
+function getRecipient(dto: CreateReminderDto): string {
+  if (dto.recipient?.trim()) {
+    return dto.recipient.trim();
+  }
+
+  if (dto.type === ReminderType.WHATSAPP) {
+    return DEFAULT_WHATSAPP_NUMBER;
+  }
+
+  if (dto.type === ReminderType.EMAIL) {
+    return DEFAULT_EMAIL;
+  }
+
+  throw new Error(`recipient is required for ${dto.type} reminders`);
+}
 
 export class ReminderService {
   private reminders: Map<string, Reminder> = new Map();
@@ -19,7 +40,7 @@ export class ReminderService {
       scheduledAt: new Date(dto.scheduledAt),
       type: dto.type,
       status: ReminderStatus.PENDING,
-      recipient: dto.recipient,
+      recipient: getRecipient(dto),
       createdAt: now,
       updatedAt: now,
     };
