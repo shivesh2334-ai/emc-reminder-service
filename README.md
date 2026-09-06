@@ -25,7 +25,7 @@ Features
 - Do not configure this project as `nextjs`; it is an Express/TypeScript service.
 - In Vercel, use the repository root as the Root Directory.
 - If a `Framework Preset` is required, select `Other`.
-- The Vercel Function entry point is `api/index.ts`; all public routes are rewritten to it.
+- The native Vercel Express entry point is `server.ts`; no route rewrites are required.
 
 ## Default recipients
 
