@@ -43,6 +43,20 @@ export function createApp(): express.Application {
     next();
   });
 
+  app.get('/', (_req, res) => {
+    res.json({
+      status: 'ok',
+      service: 'emc-reminder-service',
+      message: 'EMC Reminder Service is running',
+      endpoints: {
+        health: 'GET /health',
+        listReminders: 'GET /reminders',
+        createReminder: 'POST /reminders',
+        defaultRecipients: 'GET /reminders/config/defaults',
+      },
+    });
+  });
+
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok', service: 'emc-reminder-service', timestamp: new Date().toISOString() });
   });
