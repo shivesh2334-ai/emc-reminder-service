@@ -2,6 +2,8 @@
 
 Appointment & Reminder Microservice
 
+Opening the deployed root URL returns service status and a list of available API endpoints.
+
 Features
 
 - Patient Registration
