@@ -7,6 +7,7 @@ export enum ReminderStatus {
 
 export enum ReminderType {
   EMAIL = 'EMAIL',
+  WHATSAPP = 'WHATSAPP',
   SMS = 'SMS',
   PUSH = 'PUSH',
 }
@@ -28,7 +29,7 @@ export interface CreateReminderDto {
   message: string;
   scheduledAt: string | Date;
   type: ReminderType;
-  recipient: string;
+  recipient?: string;
 }
 
 export interface UpdateReminderDto {
