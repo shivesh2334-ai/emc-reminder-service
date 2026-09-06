@@ -4,6 +4,20 @@ import { ReminderType } from '../models/reminder.model';
 
 const app = createApp();
 
+describe('GET /', () => {
+  it('should return service information and available endpoints', async () => {
+    const res = await request(app).get('/');
+    expect(res.status).toBe(200);
+    expect(res.body).toMatchObject({
+      status: 'ok',
+      service: 'emc-reminder-service',
+      message: 'EMC Reminder Service is running',
+    });
+    expect(res.body.endpoints.health).toBe('GET /health');
+    expect(res.body.endpoints.createReminder).toBe('POST /reminders');
+  });
+});
+
 describe('GET /health', () => {
   it('should return 200 with status ok', async () => {
     const res = await request(app).get('/health');
