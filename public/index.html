@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Create and manage EMC patient reminders." />
+    <title>EMC Reminder Service</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="EMC Reminder Service home">
+        <span class="brand-mark">EMC</span>
+        <span>
+          <strong>Reminder Service</strong>
+          <small>Patient communication workspace</small>
+        </span>
+      </a>
+      <div class="service-status" id="service-status" role="status">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>Checking service</span>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Communication centre</p>
+          <h1 id="page-title">Patient reminders</h1>
+          <p>Schedule clear, timely updates by WhatsApp, email, SMS, or push notification.</p>
+        </div>
+        <button class="secondary-button" id="refresh-button" type="button">Refresh list</button>
+      </section>
+
+      <div class="workspace-grid">
+        <section class="panel form-panel" aria-labelledby="create-title">
+          <div class="panel-heading">
+            <div>
+              <p class="step">New reminder</p>
+              <h2 id="create-title">Create reminder</h2>
+            </div>
+            <span class="secure-label">Secure API</span>
+          </div>
+
+          <form id="reminder-form">
+            <div class="field">
+              <label for="title">Reminder title</label>
+              <input id="title" name="title" type="text" maxlength="120" placeholder="Follow-up appointment" required />
+            </div>
+
+            <div class="field">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="4" maxlength="500" placeholder="Your follow-up is scheduled for tomorrow at 6:00 PM." required></textarea>
+              <span class="field-hint"><span id="message-count">0</span>/500 characters</span>
+            </div>
+
+            <fieldset class="field">
+              <legend>Delivery channel</legend>
+              <div class="channel-grid">
+                <label class="channel-option">
+                  <input type="radio" name="type" value="WHATSAPP" checked />
+                  <span><strong>WhatsApp</strong><small>Fast patient update</small></span>
+                </label>
+                <label class="channel-option">
+                  <input type="radio" name="type" value="EMAIL" />
+                  <span><strong>Email</strong><small>Detailed communication</small></span>
+                </label>
+                <label class="channel-option">
+                  <input type="radio" name="type" value="SMS" />
+                  <span><strong>SMS</strong><small>Direct text message</small></span>
+                </label>
+                <label class="channel-option">
+                  <input type="radio" name="type" value="PUSH" />
+                  <span><strong>Push</strong><small>Application alert</small></span>
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="two-column">
+              <div class="field">
+                <label for="scheduledAt">Date and time</label>
+                <input id="scheduledAt" name="scheduledAt" type="datetime-local" required />
+              </div>
+              <div class="field">
+                <label for="recipient">Recipient</label>
+                <input id="recipient" name="recipient" type="text" autocomplete="off" />
+                <span class="field-hint" id="recipient-hint">Default WhatsApp number</span>
+              </div>
+            </div>
+
+            <div id="form-message" class="form-message" role="alert" aria-live="polite"></div>
+            <button class="primary-button" id="submit-button" type="submit">Schedule reminder</button>
+          </form>
+        </section>
+
+        <section class="panel list-panel" aria-labelledby="list-title">
+          <div class="panel-heading list-heading">
+            <div>
+              <p class="step">Reminder queue</p>
+              <h2 id="list-title">Scheduled reminders</h2>
+            </div>
+            <span class="count-badge" id="reminder-count">0</span>
+          </div>
+
+          <div id="reminder-list" class="reminder-list" aria-live="polite">
+            <div class="empty-state">
+              <span class="empty-icon" aria-hidden="true">✓</span>
+              <h3>No reminders yet</h3>
+              <p>Create a reminder and it will appear here.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <span>EMC Reminder Service</span>
+      <a href="/health">API health</a>
+    </footer>
+  </body>
+</html>
