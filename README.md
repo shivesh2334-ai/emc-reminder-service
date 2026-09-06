@@ -2,7 +2,8 @@
 
 Appointment & Reminder Microservice
 
-Opening the deployed root URL returns service status and a list of available API endpoints.
+Opening the deployed root URL displays the reminder dashboard. The interface can create,
+list, cancel, and delete reminders through the service API.
 
 Features
 

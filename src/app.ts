@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { randomUUID } from 'crypto';
+import path from 'path';
 import { reminderRouter } from './routes/reminder.routes';
 import { errorHandler, notFoundHandler } from './middleware/error.middleware';
 import { isDebugEnabled, logDebug } from './utils/debug-logger';
@@ -12,6 +13,7 @@ export function createApp(): express.Application {
   app.use(helmet());
   app.use(cors());
   app.use(express.json());
+  app.use(express.static(path.join(process.cwd(), 'public')));
   app.use((req, res, next) => {
     const requestId = randomUUID();
     res.locals.requestId = requestId;
@@ -41,20 +43,6 @@ export function createApp(): express.Application {
     });
 
     next();
-  });
-
-  app.get('/', (_req, res) => {
-    res.json({
-      status: 'ok',
-      service: 'emc-reminder-service',
-      message: 'EMC Reminder Service is running',
-      endpoints: {
-        health: 'GET /health',
-        listReminders: 'GET /reminders',
-        createReminder: 'POST /reminders',
-        defaultRecipients: 'GET /reminders/config/defaults',
-      },
-    });
   });
 
   app.get('/health', (_req, res) => {

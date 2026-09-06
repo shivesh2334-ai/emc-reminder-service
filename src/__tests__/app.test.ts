@@ -5,16 +5,12 @@ import { ReminderType } from '../models/reminder.model';
 const app = createApp();
 
 describe('GET /', () => {
-  it('should return service information and available endpoints', async () => {
+  it('should return the reminder dashboard', async () => {
     const res = await request(app).get('/');
     expect(res.status).toBe(200);
-    expect(res.body).toMatchObject({
-      status: 'ok',
-      service: 'emc-reminder-service',
-      message: 'EMC Reminder Service is running',
-    });
-    expect(res.body.endpoints.health).toBe('GET /health');
-    expect(res.body.endpoints.createReminder).toBe('POST /reminders');
+    expect(res.headers['content-type']).toContain('text/html');
+    expect(res.text).toContain('EMC Reminder Service');
+    expect(res.text).toContain('Create reminder');
   });
 });
 
